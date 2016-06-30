@@ -99,7 +99,15 @@ def handle_push(push):
     Returns two strings: the title and the body
     """
 
-    return push["title"], push["body"]
+    if "title" not in push.keys():
+        if "sender_name" in push.keys():
+            title = push["sender_name"]
+        else:
+            title = ""
+    else:
+        title = push["title"]
+
+    return title, push["body"]
 
 
 def check_if_dismissed(push):
