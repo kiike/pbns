@@ -33,10 +33,10 @@ Pushbullet API, so I could integrate the notifications with my desktop.
 # License and contributions
 
 The Pushbullet.com logo under `resources` directory is property of Pushbullet,
-Inc.
+Inc. This project is in no way endorsed nor affiliated with Pushbullet.
 
-This project is licensed under the ISC license. For details, see the `LICENSE`
-file.
+This project's code is licensed under the ISC license. For details, see the
+`LICENSE` file.
 
 I welcome contributions and suggestions very much. Please file bugs and (pull)
 requests!
