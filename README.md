@@ -40,3 +40,9 @@ file.
 
 I welcome contributions and suggestions very much. Please file bugs and (pull)
 requests!
+
+# TODO
+
+* When offline or Pushbullet is unreachable, wait for a connection and carry
+on.
+* Startup message via notification (Pushbullet push, of course)
