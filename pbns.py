@@ -4,6 +4,7 @@ A notification handler for Pushbullet that sends pushes via dbus.
 """
 
 import argparse
+from functools import partial
 import json
 import logging
 import os
@@ -109,7 +110,7 @@ def check_if_dismissed(push):
     return "dismissed" in push.keys() and push["dismissed"]
 
 
-def on_push(push):
+def on_push(push, account):
     """
     Handle last push
     """
@@ -120,7 +121,7 @@ def on_push(push):
 
     if push["type"] == "tickle":
         # Overwrite push with latest push
-        push = PB.get_pushes()[0]
+        push = account.get_pushes()[0]
 
         logging.debug("Last push: %s", push)
         title, body = handle_push(push)
@@ -130,7 +131,7 @@ def on_push(push):
 
         logging.debug("Push contents: %s", push)
         if push["encrypted"]:
-            decrypted = PB._decrypt_data(push["ciphertext"])
+            decrypted = account._decrypt_data(push["ciphertext"])
             push = json.loads(decrypted)
             logging.debug("Decrypted contents: %s", push)
 
@@ -158,11 +159,10 @@ def main():
     api_key = get_api_key(API_KEY_PATH)
     password = get_encryption_password(PASSWORD_PATH)
 
-    global PB
-    PB = pushbullet.Pushbullet(api_key, encryption_password=password)
+    account = pushbullet.Pushbullet(api_key, encryption_password=password)
 
-    listener = pushbullet.Listener(account=PB,
-                                   on_push=on_push,
+    listener = pushbullet.Listener(account=account,
+                                   on_push=partial(on_push, account),
                                    http_proxy_host=HTTP_PROXY_HOST,
                                    http_proxy_port=HTTP_PROXY_PORT)
     try:
