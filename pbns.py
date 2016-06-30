@@ -4,7 +4,7 @@ A notification handler for Pushbullet that sends pushes via dbus.
 """
 
 import argparse
-from functools import partial
+import functools
 import json
 import logging
 import os
@@ -110,7 +110,7 @@ def check_if_dismissed(push):
     return "dismissed" in push.keys() and push["dismissed"]
 
 
-def on_push(push, account):
+def on_push(account, push):
     """
     Handle last push
     """
@@ -159,10 +159,12 @@ def main():
     api_key = get_api_key(API_KEY_PATH)
     password = get_encryption_password(PASSWORD_PATH)
 
-    account = pushbullet.Pushbullet(api_key, encryption_password=password)
+    # Initialise the account we'll use to fetch pushes, etc. We'll pass
+    # it to the `on_push` handler afterwards.
+    pb_account = pushbullet.Pushbullet(api_key, encryption_password=password)
 
-    listener = pushbullet.Listener(account=account,
-                                   on_push=partial(on_push, account),
+    listener = pushbullet.Listener(account=pb_account,
+                                   on_push=functools.partial(on_push, pb_account),
                                    http_proxy_host=HTTP_PROXY_HOST,
                                    http_proxy_port=HTTP_PROXY_PORT)
     try:
