@@ -211,9 +211,10 @@ def main():
                         action="store_true")
     args = parser.parse_args()
     if args.debug:
-        logging.basicConfig(level=logging.DEBUG)
-
-    logging.basicConfig(format="%(asctime)s [%(levelname)5s] %(message)s")
+        log_format = ("%(asctime)s [%(levelname)5s]"
+                      " [%(filename)s:%(lineno)s] %(message)s")
+        logging.basicConfig(level=logging.DEBUG,
+                            format=log_format)
 
     api_key = get_api_key(API_KEY_PATH)
     password = get_encryption_password(PASSWORD_PATH)
