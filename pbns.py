@@ -8,10 +8,13 @@ import functools
 import json
 import logging
 import os
+import socket
 import sys
+import time
 
 import dbus
 import pushbullet
+import requests.exceptions
 
 HTTP_PROXY_HOST = None
 HTTP_PROXY_PORT = None
@@ -21,6 +24,24 @@ API_KEY_PATH = os.path.join(CONFIG_BASEDIR, "apikey")
 PASSWORD_PATH = os.path.join(CONFIG_BASEDIR, "password")
 
 ICON = os.path.join(os.path.abspath(sys.path[0]), "resources", "pb_logo.png")
+
+
+def wait_for_internet():
+    """
+    Loop until an internet connection to pushbullet.com port 80 is
+    available.
+    """
+
+    while True:
+        try:
+            logging.debug("Trying connection to Pushbullet API.")
+            socket.create_connection(('api.pushbullet.com', '80'), timeout=30)
+            logging.debug("Connection successful.")
+            break
+
+        except (socket.gaierror, socket.timeout, ConnectionRefusedError):
+            logging.debug("Connection failed. Retrying in 10 seconds")
+            time.sleep(10)
 
 
 def get_encryption_password(passwd_path):
@@ -150,6 +171,31 @@ def on_push(account, push):
         notify(title, body)
 
 
+def on_error(_, exception):
+    """
+    Handle errors during listener.run_forever().
+    """
+
+    raise exception
+
+
+def connect(api_key, password):
+    """
+    Return the account and the listener object we'll use to fetch pushes,
+    etc. We'll pass it to the `on_push` handler afterwards.
+    """
+
+    pb_account = pushbullet.Pushbullet(api_key, encryption_password=password)
+
+    listener = pushbullet.Listener(account=pb_account,
+                                   on_push=functools.partial(on_push, pb_account),
+                                   on_error=on_error,
+                                   http_proxy_host=HTTP_PROXY_HOST,
+                                   http_proxy_port=HTTP_PROXY_PORT)
+
+    return listener
+
+
 def main():
     """
     Initialize app and listen for new pushes
@@ -167,18 +213,19 @@ def main():
     api_key = get_api_key(API_KEY_PATH)
     password = get_encryption_password(PASSWORD_PATH)
 
-    # Initialise the account we'll use to fetch pushes, etc. We'll pass
-    # it to the `on_push` handler afterwards.
-    pb_account = pushbullet.Pushbullet(api_key, encryption_password=password)
+    wait_for_internet()
 
-    listener = pushbullet.Listener(account=pb_account,
-                                   on_push=functools.partial(on_push, pb_account),
-                                   http_proxy_host=HTTP_PROXY_HOST,
-                                   http_proxy_port=HTTP_PROXY_PORT)
+    listener = connect(api_key, password)
+
     try:
-        listener.run_forever()
+        while True:
+            listener.run_forever()
+            wait_for_internet()
+
     except KeyboardInterrupt:
+        logging.debug("Keyboard interrupt. Cleaning up.")
         listener.close()
+        sys.exit()
 
 
 if __name__ == "__main__":
