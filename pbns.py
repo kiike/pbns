@@ -86,6 +86,11 @@ def get_api_key(api_key_path):
 
 
 def notify(title, body):
+    """
+    Open a D-Bus object for the `Notifications` interface and send the
+    notification through it.
+    """
+
     logging.debug("Sending notification via D-Bus")
 
     interface = "org.freedesktop.Notifications"
