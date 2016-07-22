@@ -219,14 +219,19 @@ def main():
     api_key = get_api_key(API_KEY_PATH)
     password = get_encryption_password(PASSWORD_PATH)
 
-    wait_for_internet()
-
-    listener = connect(api_key, password)
-
     try:
         while True:
-            listener.run_forever()
             wait_for_internet()
+
+            listener = connect(api_key, password)
+            notify("PBNS started", "PBNS is now listening for new pushes.")
+            listener.run_forever()
+
+            # We get here after the listener closes after an interrupted
+            # socket connection
+            notify("PBNS connection lost",
+                   ("PBNS has lost its connection with Pushbullet servers",
+                    "and will notify you when the connection is regained"))
 
     except KeyboardInterrupt:
         logging.debug("Keyboard interrupt. Cleaning up.")
