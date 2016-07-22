@@ -8,7 +8,7 @@ regular notifications daemon.
 
 Click the following screenshot to view a video of PBNS in action.
 
-[![thumb](http://i.imgur.com/EdenPsl.jpg)](https://gfycat.com/ChillyMemorableBuck)
+![screencast](https://github.com/kiike/pbns/blob/readme-assets/readme-assets/demo.gif?raw=true)
 
 # Features
 
