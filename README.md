@@ -6,8 +6,6 @@ into your desktop. It forwards both mirrored notifications and regular text
 pushes (such as from chat messages) to D-Bus so that they show up via your
 regular notifications daemon.
 
-Click the following screenshot to view a video of PBNS in action.
-
 ![screencast](https://github.com/kiike/pbns/blob/readme-assets/readme-assets/demo.gif?raw=true)
 
 # Features
