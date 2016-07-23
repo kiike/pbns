@@ -230,8 +230,8 @@ def main():
             # We get here after the listener closes after an interrupted
             # socket connection
             notify("PBNS connection lost",
-                   ("PBNS has lost its connection with Pushbullet servers",
-                    "and will notify you when the connection is regained"))
+                   ("PBNS has lost its connection with Pushbullet servers "
+                    "and will notify you when the connection is regained."))
 
     except KeyboardInterrupt:
         logging.debug("Keyboard interrupt. Cleaning up.")
