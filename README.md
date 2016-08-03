@@ -6,7 +6,7 @@ into your desktop. It forwards both mirrored notifications and regular text
 pushes (such as from chat messages) to D-Bus so that they show up via your
 regular notifications daemon.
 
-![screencast](https://github.com/kiike/pbns/blob/readme-assets/readme-assets/demo.gif?raw=true)
+![screencast](https://raw.githubusercontent.com/kiike/pbns/readme-assets/demo.gif)
 
 # Features
 
