@@ -23,7 +23,7 @@ CONFIG_BASEDIR = os.path.join(os.path.expanduser("~"), ".config", "pbns")
 API_KEY_PATH = os.path.join(CONFIG_BASEDIR, "apikey")
 PASSWORD_PATH = os.path.join(CONFIG_BASEDIR, "password")
 
-ICON = os.path.join(os.path.abspath(sys.path[0]), "resources", "pb_logo.png")
+ICON = os.path.join(os.path.abspath(sys.path[0]), "pbns_logo.png")
 
 
 def wait_for_internet():
