@@ -11,6 +11,7 @@ import os
 import socket
 import sys
 import time
+import textwrap
 
 import dbus
 import pushbullet
@@ -103,6 +104,7 @@ def notify(title, body):
 
     title = title.strip()
     body = body.strip()
+    body = textwrap.fill(body)
 
     notifications.Notify("Pushbullet", 0, ICON, title, body, "", "", 5000)
 
