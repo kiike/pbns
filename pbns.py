@@ -133,7 +133,12 @@ def handle_push(push):
     else:
         title = push["title"]
 
-    return title, push["body"]
+    if "body" not in push and push["type"] == "file":
+        body = "New file received: {}".format(push["file_name"])
+    else:
+        body = push["body"]
+
+    return title, body
 
 
 def check_if_dismissed(push):
