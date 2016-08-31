@@ -40,7 +40,8 @@ def wait_for_internet():
             logging.debug("Connection successful.")
             break
 
-        except (socket.gaierror, socket.timeout, ConnectionRefusedError):
+        except (socket.gaierror, socket.timeout,
+                ConnectionRefusedError, requests.exceptions.ConnectionError):
             logging.debug("Connection failed. Retrying in 10 seconds")
             time.sleep(10)
 
