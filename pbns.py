@@ -107,7 +107,7 @@ def notify(title, body):
     body = body.strip()
     body = textwrap.fill(body)
 
-    notifications.Notify("Pushbullet", 0, ICON, title, body, "", "", 5000)
+    notifications.Notify("Pushbullet", 0, ICON, title, body, "", "", 10000)
 
 
 def handle_mirror(push):
