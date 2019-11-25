@@ -6,6 +6,6 @@ pushbullet.py==0.10.0
 pyasn1==0.1.9
 pycparser==2.14
 python-magic==0.4.11
-requests==2.10.0
+requests==2.20.0
 six==1.10.0
 websocket-client==0.37.0
