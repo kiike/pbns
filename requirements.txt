@@ -1,5 +1,5 @@
 cffi==1.7.0
-cryptography==1.4
+cryptography==3.2
 dbus-python==1.2.4
 idna==2.1
 pushbullet.py==0.10.0
